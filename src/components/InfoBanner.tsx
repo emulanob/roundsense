@@ -1,3 +1,5 @@
+const GITHUB_URL = 'https://github.com/emulanob/roundsense'
+
 interface InfoBannerProps {
   onDismiss: () => void
 }
@@ -27,7 +29,24 @@ export function InfoBanner({ onDismiss }: InfoBannerProps) {
         match economy round by round. After each round, enter the outcome, how
         many opponents survived, and whether the bomb was planted. RoundSense
         predicts what the enemy team can afford next round so you can plan your
-        buy accordingly.
+        buy accordingly.{' '}
+        <a
+          href={GITHUB_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: '#3b82f6', textDecoration: 'none' }}
+        >
+          GitHub
+        </a>
+        <span
+          style={{
+            marginLeft: '8px',
+            color: '#4b5563',
+            fontSize: '11px',
+          }}
+        >
+          v{__APP_VERSION__}
+        </span>
       </p>
       <button
         onClick={onDismiss}
