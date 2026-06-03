@@ -180,7 +180,7 @@ export function Header({
             ?
           </button>
           <a
-            href="https://buymeacoffee.com/roundsense"
+            href="https://paypal.me/emulanob"
             target="_blank"
             rel="noopener noreferrer"
             style={styles.btnSecondary}
