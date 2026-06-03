@@ -100,6 +100,6 @@ GitHub Issues is the product backlog. Three templates are configured (blank issu
 
 ## Dependency notes
 
-- `vitest` and `@vitest/coverage-v8` are pinned to v2.x to stay compatible with `vite` v5. Do not upgrade vitest to v4+ without also upgrading vite to v6+ (and `@vitejs/plugin-react` to v5+).
+- `vitest` and `@vitest/coverage-v8` are on v4.x; `vite` is on v6.x; `@vitejs/plugin-react` is on v5.x. These three must be upgraded together — `@vitejs/plugin-react` v6 requires vite v8 only, so do not jump to vite v7/8 without also upgrading `@vitejs/plugin-react` to v6+.
 - `lint-staged` is pinned to v15.x — v17+ requires Node ≥22, CI runs Node 20.
-- Packages were installed with `--legacy-peer-deps` due to vitest/vite peer dep conflicts. If adding new packages, use the same flag to keep the lockfile consistent.
+- Packages were installed with `--legacy-peer-deps` due to peer dep conflicts. If adding new packages, use the same flag to keep the lockfile consistent.
