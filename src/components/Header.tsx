@@ -4,8 +4,12 @@ interface HeaderProps {
   score: { us: number; them: number }
   ourSide: Side
   round: number
+  isOvertime: boolean
+  overtimeScore: { us: number; them: number }
+  isMatchOver: boolean
   onSideToggle: () => void
   onReset: () => void
+  onToggleBanner: () => void
 }
 
 const styles = {
@@ -46,6 +50,26 @@ const styles = {
     padding: '2px 8px',
   } as React.CSSProperties,
 
+  otBadge: {
+    fontSize: '12px',
+    fontWeight: 700,
+    color: '#f59e0b',
+    backgroundColor: 'rgba(245,158,11,0.12)',
+    border: '1px solid rgba(245,158,11,0.4)',
+    borderRadius: '4px',
+    padding: '2px 8px',
+  } as React.CSSProperties,
+
+  matchOverBadge: {
+    fontSize: '12px',
+    fontWeight: 700,
+    color: '#22c55e',
+    backgroundColor: 'rgba(34,197,94,0.12)',
+    border: '1px solid rgba(34,197,94,0.4)',
+    borderRadius: '4px',
+    padding: '2px 8px',
+  } as React.CSSProperties,
+
   scoreGroup: {
     display: 'flex',
     alignItems: 'center',
@@ -76,6 +100,9 @@ const styles = {
     cursor: 'pointer',
     minHeight: '32px',
     whiteSpace: 'nowrap' as const,
+    textDecoration: 'none',
+    display: 'inline-flex',
+    alignItems: 'center',
   } as React.CSSProperties,
 
   btnPrimary: {
@@ -89,14 +116,29 @@ const styles = {
     minHeight: '32px',
     whiteSpace: 'nowrap' as const,
   } as React.CSSProperties,
+
+  btnIcon: {
+    backgroundColor: 'transparent',
+    border: '1px solid #2a2a2a',
+    color: '#9ca3af',
+    borderRadius: '6px',
+    padding: '6px 10px',
+    fontSize: '13px',
+    cursor: 'pointer',
+    minHeight: '32px',
+  } as React.CSSProperties,
 }
 
 export function Header({
   score,
   ourSide,
   round,
+  isOvertime,
+  overtimeScore,
+  isMatchOver,
   onSideToggle,
   onReset,
+  onToggleBanner,
 }: HeaderProps) {
   const oppSide: Side = ourSide === 'CT' ? 'T' : 'CT'
 
@@ -108,7 +150,13 @@ export function Header({
       <div style={styles.topRow}>
         <div style={styles.titleGroup}>
           <span style={styles.appName}>RoundSense</span>
-          <span style={styles.roundBadge}>Round {round}</span>
+          {isMatchOver ? (
+            <span style={styles.matchOverBadge}>Match Over</span>
+          ) : isOvertime ? (
+            <span style={styles.otBadge}>OT {overtimeScore.us}:{overtimeScore.them}</span>
+          ) : (
+            <span style={styles.roundBadge}>Round {round}</span>
+          )}
         </div>
 
         <div style={styles.scoreGroup}>
@@ -125,13 +173,29 @@ export function Header({
 
         <div style={styles.actionGroup}>
           <button
+            style={styles.btnIcon}
+            onClick={onToggleBanner}
+            title="About RoundSense"
+          >
+            ?
+          </button>
+          <a
+            href="https://buymeacoffee.com/roundsense"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.btnSecondary}
+            title="Support this project"
+          >
+            ☕
+          </a>
+          <button
             style={styles.btnPrimary}
             onClick={onSideToggle}
             title="Toggle which side we are playing"
           >
             We play {ourSide} ↔ {oppSide}
           </button>
-          <button style={styles.btnSecondary} onClick={onReset}>
+          <button style={styles.btnSecondary as React.CSSProperties} onClick={onReset}>
             New Game
           </button>
         </div>

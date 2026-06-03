@@ -29,4 +29,7 @@ export interface GameState {
   score: { us: number; them: number }
   currentEconomy: EconomyState
   history: RoundRecord[]
+  isOvertime: boolean
+  overtimeScore: { us: number; them: number }
+  isMatchOver: boolean
 }

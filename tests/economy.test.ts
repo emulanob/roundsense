@@ -396,3 +396,53 @@ describe('full buy prediction after opponent win streak', () => {
     expect(after3Wins.estimatedMoneyPerPlayer).toBe(4_750)
   })
 })
+
+// ---------------------------------------------------------------------------
+// 11. Overtime economy resets
+// ---------------------------------------------------------------------------
+describe('overtime economy — money and side reset', () => {
+  // Build a state at round 24 (last regulation round) so nextRound = 25 = OT start
+  const preOT: EconomyState = {
+    round: 24,
+    ourSide: 'CT',
+    lossStreak: 0,
+    estimatedMoneyPerPlayer: 5_000,
+    predictedBuy: 'full',
+    strategyTip: '',
+  }
+
+  it('resets money to $10,000 when entering overtime (round 25)', () => {
+    const ot = updateEconomy(preOT, lossResult())
+    expect(ot.round).toBe(25)
+    expect(ot.estimatedMoneyPerPlayer).toBe(10_000)
+  })
+
+  it('swaps sides at overtime start (round 25)', () => {
+    const ot = updateEconomy(preOT, lossResult())
+    expect(ot.ourSide).toBe('T')
+  })
+
+  it('predicts "full" buy for OT round (money=$10,000)', () => {
+    const ot = updateEconomy(preOT, lossResult())
+    expect(ot.predictedBuy).toBe('full')
+  })
+
+  it('swaps sides again at OT half (round 28)', () => {
+    const ot = updateEconomy(preOT, lossResult()) // round 25 (T)
+    // Play 2 more rounds without hitting a new half
+    const ot2 = updateEconomy(ot, lossResult()) // round 26
+    const ot3 = updateEconomy(ot2, lossResult()) // round 27
+    const ot4 = updateEconomy(ot3, lossResult()) // round 28 — side swap
+    expect(ot4.round).toBe(28)
+    expect(ot4.ourSide).toBe('CT') // swapped back
+    expect(ot4.estimatedMoneyPerPlayer).toBe(10_000) // money reset
+  })
+
+  it('continues accumulating money within an OT half', () => {
+    const ot = updateEconomy(preOT, lossResult()) // round 25, $10,000
+    const ot2 = updateEconomy(ot, winResult()) // round 26, wins + money update
+    // money should differ from $10,000 (it's been updated)
+    expect(ot2.round).toBe(26)
+    expect(ot2.estimatedMoneyPerPlayer).not.toBe(10_000)
+  })
+})

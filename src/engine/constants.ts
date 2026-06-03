@@ -31,3 +31,8 @@ export const STRATEGY_TIPS: Record<BuyState, string> = {
   eco: 'Expect pistols only — play aggressive, take map control',
   pistol: 'Pistol round — expect full eco or deagle play',
 }
+
+export const OVERTIME_START_ROUND = 25
+export const OVERTIME_STARTING_MONEY = 10_000
+export const OVERTIME_ROUNDS_PER_SIDE = 3
+export const OVERTIME_WIN_THRESHOLD = 4

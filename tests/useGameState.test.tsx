@@ -106,3 +106,96 @@ describe('useGameState — resetGame', () => {
     expect(result.current.gameState.ourSide).toBe('T')
   })
 })
+
+describe('useGameState — match end at 13 wins', () => {
+  it('sets isMatchOver when us score reaches 13', () => {
+    const { result } = renderHook(() => useGameState())
+    for (let i = 0; i < 13; i++) {
+      act(() => result.current.submitRound(winRound))
+    }
+    expect(result.current.gameState.isMatchOver).toBe(true)
+  })
+
+  it('sets isMatchOver when them score reaches 13', () => {
+    const { result } = renderHook(() => useGameState())
+    for (let i = 0; i < 13; i++) {
+      act(() => result.current.submitRound(loseRound))
+    }
+    expect(result.current.gameState.isMatchOver).toBe(true)
+  })
+
+  it('does NOT set isMatchOver at 12:12 (overtime case)', () => {
+    const { result } = renderHook(() => useGameState())
+    // 12 wins and 12 losses alternating, reaching 12:12
+    for (let i = 0; i < 12; i++) {
+      act(() => result.current.submitRound(winRound))
+    }
+    for (let i = 0; i < 12; i++) {
+      act(() => result.current.submitRound(loseRound))
+    }
+    expect(result.current.gameState.score).toEqual({ us: 12, them: 12 })
+    expect(result.current.gameState.isMatchOver).toBe(false)
+    expect(result.current.gameState.isOvertime).toBe(true)
+  })
+
+  it('ignores further submits once match is over', () => {
+    const { result } = renderHook(() => useGameState())
+    for (let i = 0; i < 13; i++) {
+      act(() => result.current.submitRound(winRound))
+    }
+    const scoreSnapshot = { ...result.current.gameState.score }
+    act(() => result.current.submitRound(winRound))
+    expect(result.current.gameState.score).toEqual(scoreSnapshot)
+  })
+})
+
+describe('useGameState — overtime', () => {
+  function reachScore12_12() {
+    const { result } = renderHook(() => useGameState())
+    for (let i = 0; i < 12; i++) {
+      act(() => result.current.submitRound(winRound))
+    }
+    for (let i = 0; i < 12; i++) {
+      act(() => result.current.submitRound(loseRound))
+    }
+    return result
+  }
+
+  it('enters overtime when score hits 12:12', () => {
+    const result = reachScore12_12()
+    expect(result.current.gameState.isOvertime).toBe(true)
+  })
+
+  it('overtime score starts at 0:0', () => {
+    const result = reachScore12_12()
+    expect(result.current.gameState.overtimeScore).toEqual({ us: 0, them: 0 })
+  })
+
+  it('increments overtime score', () => {
+    const result = reachScore12_12()
+    act(() => result.current.submitRound(winRound))
+    expect(result.current.gameState.overtimeScore.us).toBe(1)
+  })
+
+  it('sets isMatchOver when OT score reaches 4', () => {
+    const result = reachScore12_12()
+    for (let i = 0; i < 4; i++) {
+      act(() => result.current.submitRound(winRound))
+    }
+    expect(result.current.gameState.isMatchOver).toBe(true)
+  })
+
+  it('resets OT score to 0:0 at 3:3 and continues', () => {
+    const result = reachScore12_12()
+    for (let i = 0; i < 3; i++) {
+      act(() => result.current.submitRound(winRound))
+    }
+    for (let i = 0; i < 3; i++) {
+      act(() => result.current.submitRound(loseRound))
+    }
+    // 3:3 in OT → reset
+    expect(result.current.gameState.overtimeScore).toEqual({ us: 0, them: 0 })
+    expect(result.current.gameState.isMatchOver).toBe(false)
+    expect(result.current.gameState.isOvertime).toBe(true)
+  })
+})

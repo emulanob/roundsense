@@ -3,12 +3,14 @@ import type { RoundResult } from '../engine/types'
 
 interface RoundInputProps {
   round: number
+  isMatchOver: boolean
+  isOvertime: boolean
   onSubmit: (result: RoundResult) => void
 }
 
 const SURVIVOR_COUNTS = [0, 1, 2, 3, 4, 5]
 
-export function RoundInput({ round, onSubmit }: RoundInputProps) {
+export function RoundInput({ round, isMatchOver, isOvertime, onSubmit }: RoundInputProps) {
   const [opponentWon, setOpponentWon] = useState<boolean | null>(null)
   const [survivors, setSurvivors] = useState<number>(0)
   const [bombPlanted, setBombPlanted] = useState(false)
@@ -93,10 +95,24 @@ export function RoundInput({ round, onSubmit }: RoundInputProps) {
 
   const submitDisabled = opponentWon === null
 
+  if (isMatchOver) {
+    return (
+      <section style={{ ...sectionStyle, alignItems: 'center', textAlign: 'center' }}>
+        <div style={{ fontSize: '24px' }}>🏆</div>
+        <div style={{ fontSize: '16px', fontWeight: 700, color: '#22c55e' }}>
+          Match Over
+        </div>
+        <div style={{ fontSize: '13px', color: '#9ca3af' }}>
+          Start a new game to track another match.
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section style={sectionStyle}>
       <div style={{ fontSize: '14px', fontWeight: 600, color: '#ffffff' }}>
-        Round {round} result
+        {isOvertime ? `OT Round ${round}` : `Round ${round}`} result
       </div>
 
       {/* Win / Loss toggle */}

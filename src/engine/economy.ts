@@ -10,6 +10,9 @@ import {
   BUY_THRESHOLD_FULL,
   BUY_THRESHOLD_HALF,
   STRATEGY_TIPS,
+  OVERTIME_START_ROUND,
+  OVERTIME_STARTING_MONEY,
+  OVERTIME_ROUNDS_PER_SIDE,
 } from './constants'
 
 export function predictBuy(
@@ -89,6 +92,26 @@ export function updateEconomy(
       ourSide: newOurSide,
       lossStreak: newLossStreak,
       estimatedMoneyPerPlayer: PISTOL_ROUND_MONEY,
+      predictedBuy: buyState,
+      strategyTip,
+    }
+  }
+
+  // Overtime: reset money and swap sides every OVERTIME_ROUNDS_PER_SIDE rounds
+  if (
+    nextRound >= OVERTIME_START_ROUND &&
+    (nextRound - OVERTIME_START_ROUND) % OVERTIME_ROUNDS_PER_SIDE === 0
+  ) {
+    const newOurSide: Side = state.ourSide === 'CT' ? 'T' : 'CT'
+    const { buyState, strategyTip } = predictBuy(
+      OVERTIME_STARTING_MONEY,
+      nextRound
+    )
+    return {
+      round: nextRound,
+      ourSide: newOurSide,
+      lossStreak: newLossStreak,
+      estimatedMoneyPerPlayer: OVERTIME_STARTING_MONEY,
       predictedBuy: buyState,
       strategyTip,
     }
