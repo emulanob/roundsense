@@ -2,7 +2,7 @@
 
 Track your CS2 match economy round by round and predict what the enemy team can afford next round.
 
-![RoundSense screenshot](https://roundsense.vercel.app)
+![RoundSense screenshot](public/screenshot.png)
 
 ## What it does
 
