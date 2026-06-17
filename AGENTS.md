@@ -21,13 +21,17 @@ npm run build        # tsc + vite build
 
 ## Commit and push conventions
 
-**Always show a `git diff` and wait for explicit user approval before pushing to main.**
+**Always commit to a feature branch and open a PR — never push directly to main.**
 
-Use `git diff HEAD~1 HEAD` (or `git diff origin/main..HEAD` if multiple commits are pending) and present it inline. Do not push until the user says yes.
+Workflow:
+
+1. Make changes and commit on a feature branch (e.g. `fix/description` or `feat/description`)
+2. Show `git diff origin/main..HEAD` and wait for explicit user approval
+3. Push the branch and open a PR with `gh pr create`
 
 Do not add `Co-Authored-By` lines to commit messages.
 
-The `main` branch has a GitHub ruleset enforcing PRs + 1 approval. The repo owner has a bypass actor configured, so direct pushes work but will show a "Bypassed rule violations" notice — that's expected.
+The `main` branch has a GitHub ruleset enforcing PRs + 1 approval. The repo owner has a bypass actor configured, so direct pushes are technically possible but should not be used.
 
 ---
 
@@ -45,8 +49,8 @@ src/
   App.tsx
   main.tsx
 tests/
-  economy.test.ts       ← 37 tests, engine only, vitest environment: node
-  useGameState.test.tsx ← 12 tests, hook, vitest environment: jsdom
+  economy.test.ts       ← 42 tests, engine only, vitest environment: node
+  useGameState.test.tsx ← 21 tests, hook, vitest environment: jsdom
 ```
 
 The engine (`src/engine/`) is a pure TypeScript module with no React dependencies. It is the core of the app — keep it well-tested and free of side effects.
@@ -55,8 +59,8 @@ The engine (`src/engine/`) is a pure TypeScript module with no React dependencie
 
 ## Testing conventions
 
-- Engine tests: `tests/economy.test.ts` — use `environment: node` (default)
-- Hook tests: `tests/useGameState.test.tsx` — declare `// @vitest-environment jsdom` at the top of the file
+- Engine tests: `tests/economy.test.ts` — 42 tests, `environment: node` (default)
+- Hook tests: `tests/useGameState.test.tsx` — 21 tests, declare `// @vitest-environment jsdom` at the top of the file
 - Coverage is enforced on `src/engine/**` with an 80% floor (currently at 100%)
 - All assertions in economy tests use `opponentSurvivors: 0` so the survivor discount is zero and expected money values are exactly computable from constants
 
@@ -83,7 +87,7 @@ If a CS2 patch changes these values, update `constants.ts` and the corresponding
 
 ## CI / hosting
 
-- **CI**: GitHub Actions (`.github/workflows/ci.yml`) — runs on every push to `main`. Steps: `npm ci → lint → typecheck → test --coverage → build`. Must stay green.
+- **CI**: GitHub Actions (`.github/workflows/ci.yml`) — runs on every push to `main` and on every PR targeting `main`. Steps: `npm ci → lint → typecheck → test --coverage → build`. Must stay green.
 - **Hosting**: Vercel, connected to the GitHub repo. Every push to `main` triggers a production deploy automatically. Every PR gets a preview URL. Live at [roundsense.vercel.app](https://roundsense.vercel.app).
 
 ---
