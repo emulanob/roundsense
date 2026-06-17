@@ -39,7 +39,7 @@ export function RoundHistory({ history }: RoundHistoryProps) {
 
   const headerCellStyle: React.CSSProperties = {
     ...cellStyle,
-    color: '#6b7280',
+    color: '#9ca3af',
     fontSize: '10px',
     textTransform: 'uppercase' as const,
     letterSpacing: '0.08em',
@@ -58,6 +58,8 @@ export function RoundHistory({ history }: RoundHistoryProps) {
     >
       <button
         onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-controls="round-history-table"
         style={{
           width: '100%',
           background: 'none',
@@ -74,13 +76,13 @@ export function RoundHistory({ history }: RoundHistoryProps) {
         }}
       >
         <span>Round History ({history.length})</span>
-        <span style={{ fontSize: '10px', color: '#4b5563' }}>
+        <span style={{ fontSize: '10px', color: '#9ca3af' }}>
           {open ? '▲' : '▼'}
         </span>
       </button>
 
       {open && (
-        <div style={{ overflowX: 'auto' }}>
+        <div id="round-history-table" style={{ overflowX: 'auto' }}>
           <table
             style={{
               width: '100%',
@@ -149,7 +151,7 @@ export function RoundHistory({ history }: RoundHistoryProps) {
                       </span>
                       <span
                         style={{
-                          color: '#4b5563',
+                          color: '#9ca3af',
                           marginLeft: '6px',
                           fontFamily: 'monospace',
                           fontSize: '11px',

@@ -82,6 +82,7 @@ export default function App() {
         isOvertime={gameState.isOvertime}
         overtimeScore={gameState.overtimeScore}
         isMatchOver={gameState.isMatchOver}
+        bannerVisible={bannerVisible}
         onSideToggle={handleSideToggle}
         onReset={handleReset}
         onToggleBanner={handleToggleBanner}
