@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/emulanob/roundsense/compare/v1.0.0...v1.0.1) (2026-06-17)
+
+
+### Bug Fixes
+
+* **a11y:** resolve 3 Vercel accessibility audit violations ([#16](https://github.com/emulanob/roundsense/issues/16)) ([509d144](https://github.com/emulanob/roundsense/commit/509d14428e798ecbb7fc2c785c9606bbfd78b31a))
+
 ## 1.0.0 (2026-06-03)
 
 
