@@ -7,6 +7,7 @@ interface HeaderProps {
   isOvertime: boolean
   overtimeScore: { us: number; them: number }
   isMatchOver: boolean
+  bannerVisible: boolean
   onSideToggle: () => void
   onReset: () => void
   onToggleBanner: () => void
@@ -136,6 +137,7 @@ export function Header({
   isOvertime,
   overtimeScore,
   isMatchOver,
+  bannerVisible,
   onSideToggle,
   onReset,
   onToggleBanner,
@@ -153,7 +155,9 @@ export function Header({
           {isMatchOver ? (
             <span style={styles.matchOverBadge}>Match Over</span>
           ) : isOvertime ? (
-            <span style={styles.otBadge}>OT {overtimeScore.us}:{overtimeScore.them}</span>
+            <span style={styles.otBadge}>
+              OT {overtimeScore.us}:{overtimeScore.them}
+            </span>
           ) : (
             <span style={styles.roundBadge}>Round {round}</span>
           )}
@@ -175,6 +179,8 @@ export function Header({
           <button
             style={styles.btnIcon}
             onClick={onToggleBanner}
+            aria-expanded={bannerVisible}
+            aria-controls="info-banner"
             title="About RoundSense"
           >
             ?
@@ -195,7 +201,10 @@ export function Header({
           >
             We play {ourSide} ↔ {oppSide}
           </button>
-          <button style={styles.btnSecondary as React.CSSProperties} onClick={onReset}>
+          <button
+            style={styles.btnSecondary as React.CSSProperties}
+            onClick={onReset}
+          >
             New Game
           </button>
         </div>

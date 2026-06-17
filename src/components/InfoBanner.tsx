@@ -6,7 +6,9 @@ interface InfoBannerProps {
 
 export function InfoBanner({ onDismiss }: InfoBannerProps) {
   return (
-    <div
+    <aside
+      id="info-banner"
+      aria-label="About RoundSense"
       style={{
         backgroundColor: '#141414',
         borderBottom: '1px solid #2a2a2a',
@@ -41,7 +43,7 @@ export function InfoBanner({ onDismiss }: InfoBannerProps) {
         <span
           style={{
             marginLeft: '8px',
-            color: '#4b5563',
+            color: '#9ca3af',
             fontSize: '11px',
           }}
         >
@@ -64,6 +66,6 @@ export function InfoBanner({ onDismiss }: InfoBannerProps) {
       >
         ×
       </button>
-    </div>
+    </aside>
   )
 }

@@ -10,7 +10,12 @@ interface RoundInputProps {
 
 const SURVIVOR_COUNTS = [0, 1, 2, 3, 4, 5]
 
-export function RoundInput({ round, isMatchOver, isOvertime, onSubmit }: RoundInputProps) {
+export function RoundInput({
+  round,
+  isMatchOver,
+  isOvertime,
+  onSubmit,
+}: RoundInputProps) {
   const [opponentWon, setOpponentWon] = useState<boolean | null>(null)
   const [survivors, setSurvivors] = useState<number>(0)
   const [bombPlanted, setBombPlanted] = useState(false)
@@ -97,7 +102,9 @@ export function RoundInput({ round, isMatchOver, isOvertime, onSubmit }: RoundIn
 
   if (isMatchOver) {
     return (
-      <section style={{ ...sectionStyle, alignItems: 'center', textAlign: 'center' }}>
+      <section
+        style={{ ...sectionStyle, alignItems: 'center', textAlign: 'center' }}
+      >
         <div style={{ fontSize: '24px' }}>🏆</div>
         <div style={{ fontSize: '16px', fontWeight: 700, color: '#22c55e' }}>
           Match Over
@@ -179,7 +186,7 @@ export function RoundInput({ round, isMatchOver, isOvertime, onSubmit }: RoundIn
           borderRadius: '8px',
           border: 'none',
           backgroundColor: submitDisabled ? '#1a1a1a' : '#3b82f6',
-          color: submitDisabled ? '#4b5563' : '#ffffff',
+          color: submitDisabled ? '#9ca3af' : '#ffffff',
           fontSize: '15px',
           fontWeight: 700,
           cursor: submitDisabled ? 'not-allowed' : 'pointer',
