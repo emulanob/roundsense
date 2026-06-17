@@ -49,8 +49,8 @@ src/
   App.tsx
   main.tsx
 tests/
-  economy.test.ts       ← 37 tests, engine only, vitest environment: node
-  useGameState.test.tsx ← 12 tests, hook, vitest environment: jsdom
+  economy.test.ts       ← 42 tests, engine only, vitest environment: node
+  useGameState.test.tsx ← 21 tests, hook, vitest environment: jsdom
 ```
 
 The engine (`src/engine/`) is a pure TypeScript module with no React dependencies. It is the core of the app — keep it well-tested and free of side effects.
